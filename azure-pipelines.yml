@@ -53,6 +53,10 @@ stages:
   #       vstsFeedPackagePublish: 'bootcamp-app'
   #       packagePublishDescription: 'Publish to azure Artifacts'
 
-    - script: |
-        echo azure_storage_account_name :$(azure_storage_account_name)
-        displayName: 'Command Line Script'
+
+    - task: CmdLine@2
+      inputs:
+        script: |
+          echo $(terraform_variable_group)
+          
+          echo Hello world
