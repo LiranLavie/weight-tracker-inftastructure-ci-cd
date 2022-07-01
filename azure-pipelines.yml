@@ -54,4 +54,5 @@ stages:
   #       packagePublishDescription: 'Publish to azure Artifacts'
 
     - script: |
-      echo azure_storage_account_name :$(azure_storage_account_name)
+        echo azure_storage_account_name :$(azure_storage_account_name)
+        displayName: 'Command Line Script'
