@@ -23,7 +23,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        workingDirectory: '$(terraform_storage_rg)'
+        workingDirectory: '$(terraform_folder_path)'
         backendServiceArm: 'azure_cloud_service'
         backendAzureRmResourceGroupName: 'terraform_resource_group'
         backendAzureRmStorageAccountName: 'terraform011'
