@@ -2,6 +2,9 @@
 trigger:
 - master
 
+variables:
+- group: terraform_variable_group
+
 pool:
   name: default
 stages:  
@@ -13,6 +16,17 @@ stages:
       displayName: 'Install terraform v.1.2.3'
       inputs:
         terraformVersion: '1.2.3'
+
+    - task: TerraformTaskV3@3
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(terraform_storage_rg)'
+        backendServiceArm: 'azure_cloud_service'
+        backendAzureRmResourceGroupName: 'terraform_resource_group'
+        backendAzureRmStorageAccountName: 'terraform011'
+        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmKey: '$(terraform_statefile_path)'
         
    # Archive build   
     - task: ArchiveFiles@2
