@@ -27,9 +27,9 @@ stages:
         command: 'init'
         workingDirectory: '$(terraform_folder_path)'
         backendServiceArm: 'azure_cloud_service'
-        backendAzureRmResourceGroupName: 'terraform_resource_group'
-        backendAzureRmStorageAccountName: 'terraform011'
-        backendAzureRmContainerName: 'tfstate'
+        backendAzureRmResourceGroupName: '$(terraform_storage_rg)'
+        backendAzureRmStorageAccountName: '$(storage_account_name)'
+        backendAzureRmContainerName: '$(storage_container_name)'
         backendAzureRmKey: '$(storage_key)'
         
   #  # Archive build   
