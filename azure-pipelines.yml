@@ -6,7 +6,9 @@ pool:
   name: default
 
 variables:
-- group: terraform_variable_group
+- group: staging
+
+
 
 stages:  
 - stage: Build  
@@ -28,7 +30,7 @@ stages:
         backendAzureRmResourceGroupName: 'terraform_resource_group'
         backendAzureRmStorageAccountName: 'terraform011'
         backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: '$(terraform_statefile_path)'
+        backendAzureRmKey: '$(storage_key)'
         
   #  # Archive build   
   #   - task: ArchiveFiles@2
