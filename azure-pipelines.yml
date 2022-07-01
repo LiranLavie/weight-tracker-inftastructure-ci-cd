@@ -9,7 +9,11 @@ stages:
   jobs:  
   - job: BuildJob  
     steps:
-
+    - task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+      displayName: 'Install Terraform 1.2.3'
+      inputs:
+        terraformVersion: 1.2.3
+      enabled: false
    # Archive build   
     - task: ArchiveFiles@2
       inputs:
