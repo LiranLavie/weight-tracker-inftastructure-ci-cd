@@ -53,8 +53,5 @@ stages:
   #       vstsFeedPackagePublish: 'bootcamp-app'
   #       packagePublishDescription: 'Publish to azure Artifacts'
 
-
-    - task: CmdLine@2
-      inputs:
-        script: |
-          echo "azure_storage_account_name:$(azure_storage_account_name)"
+    - script: |
+      echo azure_storage_account_name :$(azure_storage_account_name)
