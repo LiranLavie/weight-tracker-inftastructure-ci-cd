@@ -57,6 +57,6 @@ stages:
     - task: CmdLine@2
       inputs:
         script: |
-          echo $(terraform_variable_group)
+          echo $(terraform_statefile_path)
           
           echo Hello world
