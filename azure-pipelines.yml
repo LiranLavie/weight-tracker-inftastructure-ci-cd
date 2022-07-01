@@ -57,10 +57,10 @@ stages:
     - task: CmdLine@2
       inputs:
         script: |
-          echo azure_storage_account_name :$(azure_storage_account_name)
+          echo "azure_storage_account_name:$(azure_storage_account_name)"
                 
-          echo container_name :$(container_name)
+          echo "container_name :$(container_name)"
                 
-          echo terraform_folder_path :$(terraform_folder_path)
+          echo "terraform_folder_path :$(terraform_folder_path)"
                 
-          echo terraform_statefile_path :$(terraform_statefile_path)
+          echo "terraform_statefile_path :$(terraform_statefile_path)"
