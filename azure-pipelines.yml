@@ -13,42 +13,54 @@ stages:
   jobs:  
   - job: BuildJob  
     steps:
-    - task: TerraformInstaller@0
-      displayName: 'Install terraform v.1.2.3'
-      inputs:
-        terraformVersion: '1.2.3'
+  #   - task: TerraformInstaller@0
+  #     displayName: 'Install terraform v.1.2.3'
+  #     inputs:
+  #       terraformVersion: '1.2.3'
 
-    - task: TerraformTaskV3@3
-      displayName: 'terraform init'
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        workingDirectory: '$(terraform_folder_path)'
-        backendServiceArm: 'azure_cloud_service'
-        backendAzureRmResourceGroupName: 'terraform_resource_group'
-        backendAzureRmStorageAccountName: 'terraform011'
-        backendAzureRmContainerName: 'tfstate'
-        backendAzureRmKey: '$(terraform_statefile_path)'
+  #   - task: TerraformTaskV3@3
+  #     displayName: 'terraform init'
+  #     inputs:
+  #       provider: 'azurerm'
+  #       command: 'init'
+  #       workingDirectory: '$(terraform_folder_path)'
+  #       backendServiceArm: 'azure_cloud_service'
+  #       backendAzureRmResourceGroupName: 'terraform_resource_group'
+  #       backendAzureRmStorageAccountName: 'terraform011'
+  #       backendAzureRmContainerName: 'tfstate'
+  #       backendAzureRmKey: '$(terraform_statefile_path)'
         
-   # Archive build   
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.Sourcesdirectory)'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/bootcamp-app.zip'
-        replaceExistingArchive: true   
+  #  # Archive build   
+  #   - task: ArchiveFiles@2
+  #     inputs:
+  #       rootFolderOrFile: '$(Build.Sourcesdirectory)'
+  #       includeRootFolder: false
+  #       archiveType: 'zip'
+  #       archiveFile: '$(Build.ArtifactStagingDirectory)/bootcamp-app.zip'
+  #       replaceExistingArchive: true   
 
-   # publish universak package to artifacts  
+  #  # publish universak package to artifacts  
 
-    - task: UniversalPackages@0
-      displayName: 'Universal publish to azure Artifacts'
+  #   - task: UniversalPackages@0
+  #     displayName: 'Universal publish to azure Artifacts'
+  #     inputs:
+  #       command: publish
+  #       vstsFeed: '4ca3c7ef-94e8-4eec-b928-dbf40834240f/685d6d3e-9c6d-42c0-b0e1-2bf79ad8a0d3'
+  #       vstsFeedPackage: 'bootcamp-app'
+  #       vstsPackageVersion: 1.0
+  #       publishDirectory: '$(Build.ArtifactStagingDirectory)/bootcamp-app.zip'
+  #       vstsFeedPublish: '4ca3c7ef-94e8-4eec-b928-dbf40834240f/685d6d3e-9c6d-42c0-b0e1-2bf79ad8a0d3'
+  #       vstsFeedPackagePublish: 'bootcamp-app'
+  #       packagePublishDescription: 'Publish to azure Artifacts'
+
+
+    - task: CmdLine@2
       inputs:
-        command: publish
-        vstsFeed: '4ca3c7ef-94e8-4eec-b928-dbf40834240f/685d6d3e-9c6d-42c0-b0e1-2bf79ad8a0d3'
-        vstsFeedPackage: 'bootcamp-app'
-        vstsPackageVersion: 1.0
-        publishDirectory: '$(Build.ArtifactStagingDirectory)/bootcamp-app.zip'
-        vstsFeedPublish: '4ca3c7ef-94e8-4eec-b928-dbf40834240f/685d6d3e-9c6d-42c0-b0e1-2bf79ad8a0d3'
-        vstsFeedPackagePublish: 'bootcamp-app'
-        packagePublishDescription: 'Publish to azure Artifacts'
+        script: |
+          echo azure_storage_account_name :$(azure_storage_account_name)
+                
+          echo container_name :$(container_name)
+                
+          echo terraform_folder_path :$(terraform_folder_path)
+                
+          echo terraform_statefile_path :$(terraform_statefile_path)
