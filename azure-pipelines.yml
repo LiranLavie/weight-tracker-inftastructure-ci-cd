@@ -6,7 +6,7 @@ pool:
   name: default
 
 variables:
-- group: terraform_variable_group  
+- group: terraform_variable_group
 
 stages:  
 - stage: Build  
