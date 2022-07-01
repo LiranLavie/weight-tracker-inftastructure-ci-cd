@@ -2,12 +2,12 @@
 trigger:
 - master
 
-
-
 pool:
   name: default
+
 variables:
 - group: terraform_variable_group  
+
 stages:  
 - stage: Build  
   jobs:  
