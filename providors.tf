@@ -7,16 +7,15 @@ terraform {
        version = "~>2.0"
      }
    }
-##    Uncommant to save state in azure storage account
-#    backend "azurerm" {
-#    resource_group_name  = "weight-tracker-resource-group"
-#    storage_account_name = "tfstat001"
-#    container_name       = "tfstate"
-#    key                  = "terraform.tfstate"
-##    key deleted for safety
-##    access_key           = ""
+    backend "azurerm" {
+    resource_group_name  = "terraform_resource_group"
+    storage_account_name = "terraform011"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  # key delete for safety
+    access_key           = ""
 
- # }
+  }
  }
 provider "azurerm" {
   features {
