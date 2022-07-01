@@ -6,7 +6,7 @@ pool:
   name: default
 
 variables:
-- group: staging
+- group: terraform
 
 
 
