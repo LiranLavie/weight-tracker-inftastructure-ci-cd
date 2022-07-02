@@ -5,21 +5,19 @@ trigger:
 pool:
   name: default
 
+#add group variables
 variables:
 - group: terraform
-
-
 
 stages:  
 - stage: Build  
   jobs:  
-  - job: BuildJob  
+  - job: init_terraform
     steps:
     - task: TerraformInstaller@0
       displayName: 'Install terraform v.1.2.3'
       inputs:
         terraformVersion: '1.2.3'
-
     - task: TerraformTaskV3@3
       displayName: 'terraform init'
       inputs:
@@ -30,7 +28,22 @@ stages:
         backendAzureRmResourceGroupName: '$(terraform_storage_rg)'
         backendAzureRmStorageAccountName: '$(storage_account_name)'
         backendAzureRmContainerName: '$(storage_container_name)'
-        backendAzureRmKey: '$(storage_key)'
+        backendAzureRmKey: '$(storage_key)'        
+
+  - job: Build_staging_workspace
+    #add staging group variables
+    variables:   
+    - group: staging
+    steps:
+    - task: TerraformTaskV3@3
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(terraform_folder_path)'
+        commandOptions: '-out=$(TF_WORKSPACE)_plan_output -var-file="$(TF_WORKSPACE).tfvars"'
+        environmentServiceNameAzureRM: 'azure_cloud_service'
+
+
         
   #  # Archive build   
   #   - task: ArchiveFiles@2
