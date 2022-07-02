@@ -1,7 +1,7 @@
-# Weight Tracker Infrastructure As Code
+# Weight Tracker Infrastructure CI-CD
 
 
- This project shows how to create Infrastrucure as code for the **Weight Tracker** app with **Terraform**.
+ This project shows how to create Create a CI/CD Pipeline for an infrastructure.
 
 The requested infrastructure:
 
@@ -10,23 +10,19 @@ The requested infrastructure:
 
 ## Configuration
 
-1. Create 2 virtual networks ,private and public network.
-2. Create a Module to reuse creation of webserver virtual machines.
-3. Create 3 virtual machines and add them to availability set and load balancer
-4. Add NSG to public sunbet and allow access only from port 8080 and SSH with a specific IP address
-5. Add NSG to private subnet and allow access only from the web app with port 5432.
-6. Add PostgreSQL - Flexible Serve
-7. Restrict access to server,allow connection only from the web server subnet 
-7. Configure a terraform output, so the vm password can be retrieved during automation and set output to sensitive.
-8. Use command: **terraform output  -json** to retrieve the VMs password.
-8. Install the WeightTracker application and the Database into the VMs created by terraform .
-9. Add Terraform backend to store the Terraform state in Azure Blob Storage
+1. Creating remote backend for Terraform state storage
+2. Adding two yaml pipelines:  inftastructure-ci and inftastructure-cd
+3. In the ci pipeline start **terraform init** and **terraform plan** for each workspace. Terraform plan will output 2 files for each workspace **staging_plan_output** and **production_plan_output** . we can review the files before continuing to the **Terraform apply**. 
+To review the files:
+```
+terraform show filname
+```
+4. For workspace selection i used the **TF_WORKSPACE** variable azure deveops library.
+5. In the CD pipeline i start **Terraform apply** for each workspace. a manual approve is needed for each workspace after we review the infrastracture changes in the CI pipleline.
+6. Ansible playbook **webserver_playbook.yml** will start from the CD pipline to install webserver configuration for each workspace.
 
 
-
-
-
-
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -66,15 +62,19 @@ The requested infrastructure:
 | [azurerm_subnet_network_security_group_association.private-subnet-nsg-association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) | resource |
 | [azurerm_subnet_network_security_group_association.public-subnet-nsg-association](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) | resource |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) | resource |
-| [local_file.ansible_env_template](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 | [local_file.ansible_host_vars](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 | [local_file.ansible_inventory](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
+| [local_file.webservers_group_vars](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_db_name"></a> [db\_name](#input\_db\_name) | The name of postgres data base | `any` | n/a | yes |
 | <a name="input_my_ip"></a> [my\_ip](#input\_my\_ip) | my ip address to allow for ssh firewall rule,set in variables.tfvars for security reasons. | `string` | n/a | yes |
+| <a name="input_okta_client_id"></a> [okta\_client\_id](#input\_okta\_client\_id) | The client id for okta auth | `any` | n/a | yes |
+| <a name="input_okta_secret"></a> [okta\_secret](#input\_okta\_secret) | The okta secret | `any` | n/a | yes |
+| <a name="input_okta_url"></a> [okta\_url](#input\_okta\_url) | The the url for okta auth | `any` | n/a | yes |
 | <a name="input_postgres_firewall_rule_end_ip"></a> [postgres\_firewall\_rule\_end\_ip](#input\_postgres\_firewall\_rule\_end\_ip) | The end ip address when allowing access to postgres through postgres firewall | `any` | n/a | yes |
 | <a name="input_postgres_firewall_rule_start_ip"></a> [postgres\_firewall\_rule\_start\_ip](#input\_postgres\_firewall\_rule\_start\_ip) | The start ip address when allowing access to postgres through postgres firewall | `any` | n/a | yes |
 | <a name="input_postgres_password"></a> [postgres\_password](#input\_postgres\_password) | postgres password set in variables.tfvars for security reasons. | `any` | n/a | yes |
@@ -93,5 +93,6 @@ The requested infrastructure:
 | Name | Description |
 |------|-------------|
 | <a name="output_vms_password"></a> [vms\_password](#output\_vms\_password) | Use command - (terraform output  -json) to retrieve VMs password. |
+<!-- END_TF_DOCS -->
 
 

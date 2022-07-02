@@ -19,17 +19,18 @@ resource "local_file" "ansible_host_vars" {
      ansible_user    = module.servers_cluster.admin_usernames[count.index]
      private_ip      = module.servers_cluster.webserver_private_ips[count.index]
      server_password = module.servers_cluster.admin_passwords[count.index]
+     db_address      = "${module.postgres_server.postgres_db_name}.postgres.database.azure.com"
+
    })
 
   filename = pathexpand("~/weight-tracker-ansible-ci-cd/inventory/${terraform.workspace}/host_vars/${module.servers_cluster.webserver_names[count.index]}.yml")
 }
 
 # Create env file only containing postgres info to use with ansible
-resource "local_file" "ansible_env_template" {
+resource "local_file" "webservers_group_vars" {
   content = templatefile("./templates/ansible-webservers-vars-template.tmpl",
    {
-      db_address     = "${module.postgres_server.postgres_db_name}.postgres.database.azure.com"
-      db_name        = var.db_name
+      db_name         = var.db_name
       db_user        = var.postgres_username
       db_pass        = var.postgres_password
       okta_url       = var.okta_url

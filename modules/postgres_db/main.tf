@@ -1,6 +1,6 @@
 # Create postgres DNS zone
 resource "azurerm_private_dns_zone" "postgres_dns_zone" {
-  name                = "example.${terraform.workspace}.postgres.database.azure.com"
+  name                = "${terraform.workspace}.postgres.database.azure.com"
   resource_group_name = var.resource_group_name
 }
 
