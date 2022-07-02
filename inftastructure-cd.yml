@@ -1,0 +1,79 @@
+# Explicitly set none for repositry trigger
+trigger:
+- none
+
+# inftastructure-ci YAML pipeline
+# We are setting up a pipeline resource that references the inftastructure-ci
+# pipeline and setting up a pipeline completion trigger so that our inftastructure-cd
+# pipeline runs when a run of the inftastructure-ci pipeline completes
+resources:
+  pipelines:
+  - pipeline: inftastructure-ci # Name of the pipeline resource.
+    source: inftastructure-ci # The name of the pipeline referenced by this pipeline resource.
+    trigger: true # Run inftastructure-cd pipeline when any run of inftastructure-ci completes
+
+pool:
+  name: default
+
+#add group variables
+variables:
+- group: terraform
+
+stages:
+- stage: Staging
+
+  #add staging group variables
+  variables:   
+  - group: staging
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy Staging
+    environment: staging
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: TerraformTaskV3@3
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              workingDirectory: '$(terraform_folder_path)'
+              commandOptions: '-var-file="$(TF_WORKSPACE).tfvars" -auto-approve'
+              environmentServiceNameAzureRM: 'azure_cloud_service'
+          - task: Ansible@0
+            inputs:
+              ansibleInterface: 'agentMachine'
+              playbookPathOnAgentMachine: $(ansible_playbook_path)
+              inventoriesAgentMachine: 'file'
+              inventoryFileOnAgentMachine: '$(ansible_staging_host_path)'
+
+- stage: Production
+
+  #add production group variables
+  variables:   
+  - group: production
+
+  dependsOn: Staging
+  condition: succeeded()
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy Production
+    environment: production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: TerraformTaskV3@3
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              workingDirectory: '$(terraform_folder_path)'
+              commandOptions: '-var-file="$(TF_WORKSPACE).tfvars" -auto-approve'
+              environmentServiceNameAzureRM: 'azure_cloud_service'
+          - task: Ansible@0
+            inputs:
+              ansibleInterface: 'agentMachine'
+              playbookPathOnAgentMachine: $(ansible_playbook_path)
+              inventoriesAgentMachine: 'file'
+              inventoryFileOnAgentMachine: '$(ansible_production_host_path)'
