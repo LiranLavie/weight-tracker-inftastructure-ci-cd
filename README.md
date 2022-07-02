@@ -1,7 +1,7 @@
 # Weight Tracker Infrastructure CI-CD
 
 
- This project shows how to create Create a CI/CD Pipeline for an infrastructure.
+ This project shows how to create a CI-CD Pipeline for an infrastructure.
 
 The requested infrastructure:
 
@@ -12,14 +12,14 @@ The requested infrastructure:
 
 1. Creating remote backend for Terraform state storage
 2. Adding two yaml pipelines:  inftastructure-ci and inftastructure-cd
-3. In the ci pipeline start **terraform init** and **terraform plan** for each workspace. Terraform plan will output 2 files for each workspace **staging_plan_output** and **production_plan_output** . we can review the files before continuing to the **Terraform apply**. 
+3. The the ci pipeline start **terraform init** and **terraform plan** for each workspace. Terraform plan will output plan files for each workspace **staging_plan_output** and **production_plan_output** . we can review the files before continuing to **Terraform apply**. 
 To review the files:
 ```
 terraform show filname
 ```
-4. For workspace selection i used the **TF_WORKSPACE** variable azure deveops library.
-5. In the CD pipeline i start **Terraform apply** for each workspace. a manual approve is needed for each workspace after we review the infrastracture changes in the CI pipleline.
-6. Ansible playbook **webserver_playbook.yml** will start from the CD pipline to install webserver configuration for each workspace.
+4. For workspace selection i used the TF_WORKSPACE variable azure deveops library.
+5. The the CD pipeline start **Terraform apply** for each workspace. a manual approve is needed for each workspace after we review the infrastructure changes in the CI pipeline.
+6. Ansible playbook **webserver_playbook.yml** will start from the CD pipeline to install webserver configuration for each workspace.
 
 
 <!-- BEGIN_TF_DOCS -->
