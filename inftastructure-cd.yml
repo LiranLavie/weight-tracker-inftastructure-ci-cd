@@ -1,6 +1,5 @@
 # Explicitly set none for repositry trigger
-trigger:
-- none
+trigger: none
 
 # inftastructure-ci YAML pipeline
 # We are setting up a pipeline resource that references the inftastructure-ci
