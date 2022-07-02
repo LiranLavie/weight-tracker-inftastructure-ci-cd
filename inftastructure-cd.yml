@@ -17,10 +17,15 @@ pool:
 
 #add group variables
 variables:
-- group: webservers
+- group: terraform
 
 stages:
 - stage: Staging
+
+  #add staging group variables
+  variables:   
+  - group: staging
+
   jobs:
   - deployment: Deploy
     displayName: Deploy Staging
@@ -44,6 +49,11 @@ stages:
               inventoryFileOnAgentMachine: '$(ansible_staging_host_path)'
 
 - stage: Production
+
+  #add production group variables
+  variables:   
+  - group: production
+
   dependsOn: Staging
   condition: succeeded()
   jobs:
