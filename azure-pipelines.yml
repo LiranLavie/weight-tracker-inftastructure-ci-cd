@@ -10,7 +10,7 @@ variables:
 - group: terraform
 
 stages:  
-- stage: Build  
+- stage: Infrastructure init and plan  
   jobs:  
   - job: init_terraform
     steps:
@@ -56,26 +56,26 @@ stages:
         commandOptions: '-out=$(TF_WORKSPACE)_plan_output -var-file="$(TF_WORKSPACE).tfvars"'
         environmentServiceNameAzureRM: 'azure_cloud_service'
 
-        
-  #  # Archive build   
-  #   - task: ArchiveFiles@2
-  #     inputs:
-  #       rootFolderOrFile: '$(Build.Sourcesdirectory)'
-  #       includeRootFolder: false
-  #       archiveType: 'zip'
-  #       archiveFile: '$(Build.ArtifactStagingDirectory)/bootcamp-app.zip'
-  #       replaceExistingArchive: true   
+- stage: Build       
+  jobs:  
+  - job: init_terraform
+    steps:      
+   # Archive build   
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.Sourcesdirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/weight-tracker-inftastructure-ci-cd.zip'
+        replaceExistingArchive: true   
 
-  #  # publish universak package to artifacts  
-
-  #   - task: UniversalPackages@0
-  #     displayName: 'Universal publish to azure Artifacts'
-  #     inputs:
-  #       command: publish
-  #       vstsFeed: '4ca3c7ef-94e8-4eec-b928-dbf40834240f/685d6d3e-9c6d-42c0-b0e1-2bf79ad8a0d3'
-  #       vstsFeedPackage: 'bootcamp-app'
-  #       vstsPackageVersion: 1.0
-  #       publishDirectory: '$(Build.ArtifactStagingDirectory)/bootcamp-app.zip'
-  #       vstsFeedPublish: '4ca3c7ef-94e8-4eec-b928-dbf40834240f/685d6d3e-9c6d-42c0-b0e1-2bf79ad8a0d3'
-  #       vstsFeedPackagePublish: 'bootcamp-app'
-  #       packagePublishDescription: 'Publish to azure Artifacts'
+   # publish universak package to artifacts    
+    - task: UniversalPackages@0
+      inputs:
+        command: 'publish'
+        publishDirectory: '$(Build.ArtifactStagingDirectory)'
+        feedsToUsePublish: 'internal'
+        vstsFeedPublish: 'b14f0775-06f6-43ba-978a-d71515418999/44aef610-b53e-4ba6-bc0f-745d6ed725b7'
+        vstsFeedPackagePublish: 'weight-tracker-ansible-ci-cd'
+        versionOption: 'patch'
+        packagePublishDescription: 'Publish to azure Artifacts'
