@@ -9,8 +9,9 @@ pool:
 variables:
 - group: terraform
 
+#Init terraform
 stages:  
-- stage: Infrastructure_init_and_plan  
+- stage: Iinit  
   jobs:  
   - job: init_terraform
     steps:
@@ -28,9 +29,12 @@ stages:
         backendAzureRmResourceGroupName: '$(terraform_storage_rg)'
         backendAzureRmStorageAccountName: '$(storage_account_name)'
         backendAzureRmContainerName: '$(storage_container_name)'
-        backendAzureRmKey: '$(storage_key)'        
+        backendAzureRmKey: '$(storage_key)'  
 
-  - job: Build_staging_workspace
+# workspaces planning
+- stage: Plan  
+  jobs:  
+  - job: plan_staging_workspace
     #add staging group variables
     variables:   
     - group: staging
@@ -43,7 +47,7 @@ stages:
         commandOptions: '-out=$(TF_WORKSPACE)_plan_output -var-file="$(TF_WORKSPACE).tfvars"'
         environmentServiceNameAzureRM: 'azure_cloud_service'
         
-  - job: Build_production_workspace
+  - job: plan_production_workspace
     #add production group variables
     variables:   
     - group: production
