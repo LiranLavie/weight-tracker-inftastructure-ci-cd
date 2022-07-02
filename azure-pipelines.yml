@@ -60,9 +60,9 @@ stages:
         commandOptions: '-out=$(TF_WORKSPACE)_plan_output -var-file="$(TF_WORKSPACE).tfvars"'
         environmentServiceNameAzureRM: 'azure_cloud_service'
 
-- stage: Build       
-  jobs:  
-  - job: init_terraform
+- stage: publish       
+  jobs: 
+  - job: publish_artifact
     steps:      
    # Archive build   
     - task: ArchiveFiles@2
