@@ -10,7 +10,7 @@ The requested infrastructure:
 
 ## Configuration
 
-1. Creating remote backend for Terraform state storage
+1. Creating remote backend for Terraform state storage.
 2. Adding two yaml pipelines:  inftastructure-ci and inftastructure-cd
 3. The the ci pipeline start **terraform init** and **terraform plan** for each workspace. Terraform plan will output plan files for each workspace **staging_plan_output** and **production_plan_output** . we can review the files before continuing to **Terraform apply**. 
 To review the files:
