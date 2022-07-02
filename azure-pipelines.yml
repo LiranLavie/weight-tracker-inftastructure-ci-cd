@@ -42,7 +42,19 @@ stages:
         workingDirectory: '$(terraform_folder_path)'
         commandOptions: '-out=$(TF_WORKSPACE)_plan_output -var-file="$(TF_WORKSPACE).tfvars"'
         environmentServiceNameAzureRM: 'azure_cloud_service'
-
+        
+  - job: Build_production_workspace
+    #add production group variables
+    variables:   
+    - group: production
+    steps:
+    - task: TerraformTaskV3@3
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(terraform_folder_path)'
+        commandOptions: '-out=$(TF_WORKSPACE)_plan_output -var-file="$(TF_WORKSPACE).tfvars"'
+        environmentServiceNameAzureRM: 'azure_cloud_service'
 
         
   #  # Archive build   
