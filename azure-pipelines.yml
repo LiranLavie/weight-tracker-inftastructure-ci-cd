@@ -10,7 +10,7 @@ variables:
 - group: terraform
 
 stages:  
-- stage: Infrastructure init and plan  
+- stage: Infrastructure_init_and_plan  
   jobs:  
   - job: init_terraform
     steps:
