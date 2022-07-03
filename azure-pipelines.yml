@@ -15,10 +15,10 @@ stages:
   jobs:  
   - job: init_terraform
     steps:
-    - task: TerraformInstaller@0
-      displayName: 'Install terraform v.1.2.3'
-      inputs:
-        terraformVersion: '1.2.3'
+    # - task: TerraformInstaller@0
+    #   displayName: 'Install terraform v.1.2.3'
+    #   inputs:
+    #     terraformVersion: '1.2.3'
     - task: TerraformTaskV3@3
       displayName: 'terraform init'
       inputs:
