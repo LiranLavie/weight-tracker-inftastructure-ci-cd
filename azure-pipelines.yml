@@ -11,14 +11,14 @@ variables:
 
 #Init terraform
 stages:  
-- stage: Iinit  
+- stage: Init  
   jobs:  
   - job: init_terraform
     steps:
-    # - task: TerraformInstaller@0
-    #   displayName: 'Install terraform v.1.2.3'
-    #   inputs:
-    #     terraformVersion: '1.2.3'
+    - task: TerraformInstaller@0
+      displayName: 'Install terraform v.1.2.3'
+      inputs:
+        terraformVersion: '1.2.3'
     - task: TerraformTaskV3@3
       displayName: 'terraform init'
       inputs:
@@ -29,7 +29,6 @@ stages:
         backendAzureRmResourceGroupName: '$(terraform_storage_rg)'
         backendAzureRmStorageAccountName: '$(storage_account_name)'
         backendAzureRmContainerName: '$(storage_container_name)'
-        #commandOptions: '-migrate-state -input=false'
         backendAzureRmKey: '$(storage_key)'  
 
 # workspaces planning
