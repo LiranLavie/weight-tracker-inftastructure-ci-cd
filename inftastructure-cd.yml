@@ -39,7 +39,7 @@ stages:
               command: 'apply'
               workingDirectory: '$(terraform_folder_path)'
               commandOptions: '-var-file="$(TF_WORKSPACE).tfvars" -auto-approve'
-              environmentServiceNameAzureRM: 'azure_cloud_service'
+              environmentServiceNameAzureRM: 'azure_cloud'
           - task: Ansible@0
             inputs:
               ansibleInterface: 'agentMachine'
@@ -69,7 +69,7 @@ stages:
               command: 'apply'
               workingDirectory: '$(terraform_folder_path)'
               commandOptions: '-var-file="$(TF_WORKSPACE).tfvars" -auto-approve'
-              environmentServiceNameAzureRM: 'azure_cloud_service'
+              environmentServiceNameAzureRM: 'azure_cloud'
           - task: Ansible@0
             inputs:
               ansibleInterface: 'agentMachine'
