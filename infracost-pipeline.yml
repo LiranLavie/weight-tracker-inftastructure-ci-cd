@@ -1,7 +1,6 @@
 # The Azure Pipelines docs (https://docs.microsoft.com/en-us/azure/devops/pipelines/process/tasks) describe other options.
-# Running on pull requests to `master` (or your default branch) is a good default.
-pr:
-  - master
+trigger:
+  - main
 
 variables:
   - name: TF_ROOT
@@ -15,7 +14,7 @@ jobs:
   - job: infracost
     displayName: Run Infracost
     pool:
-      vmImage: ubuntu-latest
+      name: default
 
     steps:
      # If you use private modules, add a base 64 encoded secret
