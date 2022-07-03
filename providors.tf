@@ -9,7 +9,7 @@ terraform {
    }
     backend "azurerm" {
     resource_group_name  = "terraform_resource_group"
-    storage_account_name = "terraform011"
+    storage_account_name = "terraform0111"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   # key delete for safety
