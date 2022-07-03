@@ -1,7 +1,7 @@
 # The Azure Pipelines docs (https://docs.microsoft.com/en-us/azure/devops/pipelines/process/tasks) describe other options.
 # Running on pull requests to `master` (or your default branch) is a good default.
-trigger:
-  - main
+pr:
+  - master
 
 variables:
   - name: TF_ROOT
@@ -78,10 +78,10 @@ jobs:
     #   hide-and-new - Minimize previous comments and create a new one.
     #   new - Create a new cost estimate comment on every push.
     # See https://www.infracost.io/docs/features/cli_commands/#comment-on-pull-requests for other options.
-    - bash: |
-        infracost comment github --path=/tmp/infracost.json \
-                                 --github-token=$(githubToken) \
-                                 --pull-request=$(System.PullRequest.PullRequestNumber) \
-                                 --repo=$(Build.Repository.Name) \
-                                 --behavior=update
-      displayName: Post Infracost comment
+      - bash: |
+          infracost comment github --path=/tmp/infracost.json \
+                                  --github-token=$(githubToken) \
+                                  --pull-request=$(System.PullRequest.PullRequestNumber) \
+                                  --repo=$(Build.Repository.Name) \
+                                  --behavior=update
+        displayName: Post Infracost comment
