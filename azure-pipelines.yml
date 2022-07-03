@@ -29,6 +29,7 @@ stages:
         backendAzureRmResourceGroupName: '$(terraform_storage_rg)'
         backendAzureRmStorageAccountName: '$(storage_account_name)'
         backendAzureRmContainerName: '$(storage_container_name)'
+        commandOptions: '-migrate-state'
         backendAzureRmKey: '$(storage_key)'  
 
 # workspaces planning
